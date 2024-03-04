@@ -26,9 +26,10 @@ export class ApiController {
   ) {
     const cache = await this.cacheService.hgetall(`list:${id}`);
     if (!cache.data || cache.secret !== secret) throw new NotFoundException();
+    await this.cacheService.del(`list:${id}`);
     response.set({
       'Content-Type': cache.type,
-      'Content-Disposition': `attachment; filename="${id}.zip"`,
+      'Content-Disposition': 'attachment',
     });
     Readable.from(cache.data).pipe(response);
   }
@@ -46,7 +47,7 @@ export class ApiController {
       data: file.buffer.toString('base64'),
     });
     await this.cacheService.expire(`list:${id}`, expire);
-    return { id };
+    return id;
   }
 
   private async getNextID(compact: boolean) {
