@@ -6,10 +6,10 @@ import {
 } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { ApiModule } from './api/api.module';
 import { AppInterceptor } from './app.interceptor';
 import { AppLoggerMiddleware } from './app.middleware';
 import { CacheModule } from './cache/cache.module';
-import { ApiModule } from './api/api.module';
 
 @Module({
   imports: [ConfigModule.forRoot(), CacheModule, ApiModule],
