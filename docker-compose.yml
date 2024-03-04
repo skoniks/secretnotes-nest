@@ -1,0 +1,24 @@
+services:
+  redis:
+    image: redis:latest
+    command: --requirepass ${REDIS_PASS}
+    restart: unless-stopped
+    volumes:
+      - redis:/data
+    ports:
+      - 127.0.0.1:${REDIS_PORT}:6379
+  phpredisadmin:
+    image: erikdubbelboer/phpredisadmin:latest
+    restart: unless-stopped
+    ports:
+      - 8081:80
+    depends_on:
+      - redis
+    environment:
+      REDIS_1_HOST: "redis"
+      REDIS_1_PORT: "${REDIS_PORT}"
+      REDIS_1_AUTH: ${REDIS_PASS}
+      # ADMIN_USER: "root"
+      # ADMIN_PASS: ${REDIS_PASS}
+volumes:
+  redis: null
