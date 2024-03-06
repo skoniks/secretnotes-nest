@@ -5,8 +5,9 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ApiModule } from './api/api.module';
+import { AppExceptionsFilter } from './app.exception';
 import { AppInterceptor } from './app.interceptor';
 import { AppLoggerMiddleware } from './app.middleware';
 import { CacheModule } from './cache/cache.module';
@@ -29,6 +30,10 @@ import { CacheModule } from './cache/cache.module';
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: AppExceptionsFilter,
     },
   ],
 })
