@@ -4,6 +4,7 @@ import {
   Get,
   NotFoundException,
   Post,
+  Put,
   Res,
   UploadedFile,
   UseInterceptors,
@@ -20,6 +21,7 @@ export class ApiController {
   constructor(private cacheService: CacheService) {}
 
   @Get()
+  @Post()
   async download(
     @Body() { id, secret }: DownloadDto,
     @Res() response: Response,
@@ -34,7 +36,7 @@ export class ApiController {
     Readable.from(cache.data).pipe(response);
   }
 
-  @Post()
+  @Put()
   @UseInterceptors(FileInterceptor('file'))
   async upload(
     @Body() { secret, expire, compact }: UploadDto,
