@@ -53,7 +53,7 @@ export class ApiController {
   private async getNextID(compact: boolean) {
     if (!compact) return crypto.randomUUID();
     const index = await this.cacheService.get('index');
-    const next = (parseInt(index ?? '') || 0) + 1;
+    const next = (parseInt(index ?? '') || 19440) + 1;
     await this.cacheService.set('index', next);
     return next.toString(36);
   }
