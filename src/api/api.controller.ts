@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   NotFoundException,
   Post,
   Put,
@@ -9,7 +8,7 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, NoFilesInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 import { Readable } from 'stream';
 import { CacheService } from '../cache/cache.service';
@@ -20,8 +19,8 @@ import { UploadDto } from './dto/upload-dto';
 export class ApiController {
   constructor(private cacheService: CacheService) {}
 
-  @Get()
   @Post()
+  @UseInterceptors(NoFilesInterceptor())
   async download(
     @Body() { id, secret }: DownloadDto,
     @Res() response: Response,
