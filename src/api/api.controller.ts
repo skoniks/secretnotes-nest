@@ -28,11 +28,13 @@ export class ApiController {
     const cache = await this.cacheService.hgetall(`list:${id}`);
     if (!cache.data || cache.secret !== secret) throw new NotFoundException();
     await this.cacheService.del(`list:${id}`);
+    const data = Buffer.from(cache.data, 'base64');
     response.set({
       'Content-Type': cache.type,
+      'Content-Length': data.byteLength,
       'Content-Disposition': 'attachment',
     });
-    Readable.from(cache.data).pipe(response);
+    Readable.from(data).pipe(response);
   }
 
   @Put()
