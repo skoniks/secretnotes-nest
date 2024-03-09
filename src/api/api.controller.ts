@@ -53,11 +53,12 @@ export class ApiController {
     return id;
   }
 
-  private async getNextID(compact: boolean) {
+  private async getNextID(compact: boolean): Promise<string> {
     if (!compact) return crypto.randomUUID();
-    const index = await this.cacheService.get('index');
-    const next = (parseInt(index ?? '') || 19440) + 1;
-    await this.cacheService.set('index', next);
-    return next.toString(36);
+    return (Date.now() % 259200).toString(36);
+    // const index = await this.cacheService.get('index');
+    // const next = (parseInt(index ?? '') || 19440) + 1;
+    // await this.cacheService.set('index', next);
+    // return next.toString(36);
   }
 }
